@@ -29,10 +29,10 @@ func main() {
 	api.PUT("/update/:id", svc.UpdateWord)
 	api.DELETE("/delete/:id", svc.DeleteWord)
 
-	api.GET("/report/get/:id", svc.GetReport)
-	api.POST("/report/create", svc.CreateReport)
-	api.PUT("/report/update/:id", svc.UpdateReport)
-	api.DELETE("/report/delete/:id", svc.DeleteReport)
+	api.GET("/report/:id", svc.GetReport)
+	api.POST("/report", svc.CreateReport)
+	api.PUT("/report/:id", svc.UpdateReport)
+	api.DELETE("/report/:id", svc.DeleteReport)
 
 	// запускаем сервер, чтобы слушал 8000 порт
 	router.Logger.Fatal(router.Start(":8000"))
