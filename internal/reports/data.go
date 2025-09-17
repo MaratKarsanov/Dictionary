@@ -3,7 +3,6 @@ package reports
 import (
 	"database/sql"
 	"errors"
-	"time"
 )
 
 type ReportsRepository struct {
@@ -26,14 +25,10 @@ func (r *ReportsRepository) GetReport(id int) (*Report, error) {
 }
 
 func (r *ReportsRepository) CreateReport(title, description string) error {
-	createdAt := time.Now()
-	updatedAt := time.Now()
 	_, err := r.db.Exec(
-		`INSERT INTO reports (title, description, created_at, updated_at) VALUES ($1, $2, $3, $4)`,
+		`INSERT INTO reports (title, description, created_at, updated_at) VALUES ($1, $2, NOW(), NOW())`,
 		title,
-		description,
-		createdAt,
-		updatedAt)
+		description)
 	if err != nil {
 		return err
 	}
@@ -42,12 +37,10 @@ func (r *ReportsRepository) CreateReport(title, description string) error {
 }
 
 func (r *ReportsRepository) UpdateReport(id int, title, description string) error {
-	updatedAt := time.Now()
 	res, err := r.db.Exec(
-		`UPDATE reports SET title = $1, description = $2, updated_at = $3 WHERE id = $4`,
+		`UPDATE reports SET title = $1, description = $2, updated_at = NOW() WHERE id = $3`,
 		title,
 		description,
-		updatedAt,
 		id)
 	if err != nil {
 		return err
