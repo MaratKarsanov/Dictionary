@@ -59,3 +59,27 @@ func (r *Repo) DeleteWordById(id int) error {
 
 	return nil
 }
+
+func (r *Repo) SearchWords(query string) ([]Word, error) {
+	rows, err := r.db.Query(`
+        SELECT id, title, translation
+        FROM ru_en
+        ORDER BY similarity(title, $1) DESC
+        LIMIT 100;
+    `, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var result []Word
+	for rows.Next() {
+		var word Word
+		err := rows.Scan(&word.Id, &word.Title, &word.Translation)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, word)
+	}
+	return result, rows.Err()
+}

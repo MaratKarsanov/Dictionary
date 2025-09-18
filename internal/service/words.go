@@ -92,3 +92,19 @@ func (s *Service) DeleteWord(c echo.Context) error {
 
 	return c.String(http.StatusOK, "OK")
 }
+
+func (s *Service) SearchWords(c echo.Context) error {
+	query := c.QueryParam("title")
+	if query == "" {
+		return c.JSON(s.NewError(InvalidParams))
+	}
+
+	repo := s.wordsRepo
+	words, err := repo.SearchWords(query)
+	if err != nil {
+		s.logger.Error(err)
+		return c.JSON(s.NewError(InternalServerError))
+	}
+
+	return c.JSON(http.StatusOK, words)
+}

@@ -1,8 +1,12 @@
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
 CREATE TABLE ru_en (
                        id SERIAL PRIMARY KEY,
                        title VARCHAR(50) UNIQUE,
                        translation VARCHAR(255)
 );
+
+CREATE INDEX idx_table_field_trgm ON ru_en USING gin (title gin_trgm_ops);
 
 INSERT INTO ru_en (title, translation) VALUES
                                            ('Привет', 'Hello'),

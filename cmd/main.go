@@ -34,6 +34,8 @@ func main() {
 	api.PUT("/report/:id", svc.UpdateReport)
 	api.DELETE("/report/:id", svc.DeleteReport)
 
+	api.GET("/search/:culture", svc.SearchWords)
+
 	// запускаем сервер, чтобы слушал 8000 порт
 	router.Logger.Fatal(router.Start(":8000"))
 }
